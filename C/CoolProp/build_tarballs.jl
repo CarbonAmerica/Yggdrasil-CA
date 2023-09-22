@@ -7,7 +7,8 @@ version = v"6.5.0"
 
 # Collection of sources required to complete build
 sources = [
-    GitSource("https://github.com/CarbonAmerica/CoolProp-CA.git", "46a51eb7ebfbe76dd655ebb12566c2619ca37fb2"),
+    #GitSource("https://github.com/CarbonAmerica/CoolProp-CA.git", "46a51eb7ebfbe76dd655ebb12566c2619ca37fb2"),
+    DirectorySource("/home/jeffrey/Documents/CoolProp-CA"),
     #=ArchiveSource("https://sourceforge.net/projects/coolprop/files/CoolProp/$version/source/CoolProp_sources.zip", "ea3475c26c90ce33386e7e686c36de42f1167b37879eff1c5c9d1943063d740d"),=#
 ]
 
@@ -15,17 +16,17 @@ sources = [
 script = raw"""
 cd $WORKSPACE/srcdir
 
-sed -i 's/Windows/windows/' CoolProp-CA/dev/Tickets/60.cpp
-sed -i 's/Windows/windows/' CoolProp-CA/src/CPfilepaths.cpp
+sed -i 's/Windows/windows/' dev/Tickets/60.cpp
+sed -i 's/Windows/windows/' src/CPfilepaths.cpp
 # Do not add `-m32`/`-m64` flags
-sed -i 's/-m${BITNESS}//' CoolProp-CA/CMakeLists.txt
+sed -i 's/-m${BITNESS}//' CMakeLists.txt
 
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_FIND_ROOT_PATH=$prefix -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TARGET_TOOLCHAIN} -DCMAKE_BUILD_TYPE=Release -DCOOLPROP_SHARED_LIBRARY=ON ../CoolProp-CA/
+cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_FIND_ROOT_PATH=$prefix -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TARGET_TOOLCHAIN} -DCMAKE_BUILD_TYPE=Release -DCOOLPROP_SHARED_LIBRARY=ON ../
 VERBOSE=ON cmake --build . --config Release --target CoolProp -- -j${nproc}
 install -Dvm 0755 "libCoolProp.${dlext}" "${libdir}/libCoolProp.${dlext}"
-install_license $WORKSPACE/srcdir/CoolProp-CA/LICENSE
+install_license $WORKSPACE/srcdir/LICENSE
 """
 
 # These are the platforms we will build for by default, unless further
