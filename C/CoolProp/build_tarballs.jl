@@ -15,17 +15,17 @@ sources = [
 script = raw"""
 cd $WORKSPACE/srcdir
 
-sed -i 's/Windows/windows/' source/dev/Tickets/60.cpp
-sed -i 's/Windows/windows/' source/src/CPfilepaths.cpp
+sed -i 's/Windows/windows/' CoolProp-CA/dev/Tickets/60.cpp
+sed -i 's/Windows/windows/' CoolProp-CA/src/CPfilepaths.cpp
 # Do not add `-m32`/`-m64` flags
-sed -i 's/-m${BITNESS}//' source/CMakeLists.txt
+sed -i 's/-m${BITNESS}//' CoolProp-CA/CMakeLists.txt
 
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_FIND_ROOT_PATH=$prefix -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TARGET_TOOLCHAIN} -DCMAKE_BUILD_TYPE=Release -DCOOLPROP_SHARED_LIBRARY=ON ../source/
+cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_FIND_ROOT_PATH=$prefix -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TARGET_TOOLCHAIN} -DCMAKE_BUILD_TYPE=Release -DCOOLPROP_SHARED_LIBRARY=ON ../CoolProp-CA/
 VERBOSE=ON cmake --build . --config Release --target CoolProp -- -j${nproc}
 install -Dvm 0755 "libCoolProp.${dlext}" "${libdir}/libCoolProp.${dlext}"
-install_license $WORKSPACE/srcdir/source/LICENSE
+install_license $WORKSPACE/srcdir/CoolProp-CA/LICENSE
 """
 
 # These are the platforms we will build for by default, unless further
